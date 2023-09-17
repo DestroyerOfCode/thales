@@ -1,10 +1,12 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
+    container_name: 'mysqlthales'
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    mem_limit: '512m'
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -14,3 +16,20 @@ services:
       - "3306:3306"
     volumes:
     - "../src/main/resources/init.sql:/docker-entrypoint-initdb.d/1.sql"
+  es01:
+    container_name: 'es01'
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    mem_limit: '4g'
+    mem_reservation: '2g'
+    cpus: 4
+    environment:
+      - node.name=es01
+      - cluster.name=my-cluster
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m   # Set the heap memory limits here
+    ports:
+      - "9200:9200"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1

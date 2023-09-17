@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id ("org.springframework.boot") version ("3.1.3")
+    id("org.springframework.boot") version ("3.1.3")
 }
 
 apply {
@@ -21,6 +21,8 @@ dependencies {
     implementation(libs.mysql.connector.j)
     implementation(libs.modelmapper)
     implementation(libs.slf4j.api)
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
+
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
 }

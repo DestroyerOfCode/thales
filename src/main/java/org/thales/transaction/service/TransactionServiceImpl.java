@@ -1,6 +1,5 @@
 package org.thales.transaction.service;
 
-import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,7 @@ import org.thales.transaction.converter.TransactionMapper;
 import org.thales.transaction.dto.TransactionDTO;
 import org.thales.transaction.exception.TransactionRequestException;
 import org.thales.transaction.model.domain.Transaction;
+import org.thales.transaction.model.repository.TransactionElasticRepository;
 import org.thales.transaction.model.repository.TransactionRepository;
 
 @Service
@@ -17,19 +17,23 @@ public class TransactionServiceImpl implements TransactionService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TransactionServiceImpl.class);
   private final TransactionRepository repository;
+  private final TransactionElasticRepository elasticRepository;
   private final TransactionMapper mapper;
 
   @Autowired
   public TransactionServiceImpl(
-      final TransactionRepository repository, final TransactionMapper mapper) {
+      final TransactionRepository repository,
+      final TransactionElasticRepository elasticRepository,
+      final TransactionMapper mapper) {
     super();
     this.repository = repository;
+    this.elasticRepository = elasticRepository;
     this.mapper = mapper;
   }
 
   @Override
   public final TransactionDTO getTransactionById(final Long id) {
-    final Optional<Transaction> transactionOpt = repository.findById(id);
+    final Optional<Transaction> transactionOpt = elasticRepository.findById(id);
 
     if (transactionOpt.isPresent()) {
       return transactionOpt
@@ -51,8 +55,8 @@ public class TransactionServiceImpl implements TransactionService {
   public final TransactionDTO create(final TransactionDTO dto) {
     try {
       final Transaction transaction = mapper.toEntity(dto);
-      final Transaction savedTransaction = repository.saveAndFlush(transaction);
-
+      final Transaction savedTransaction = repository.save(transaction);
+      elasticRepository.save(transaction);
       return mapper.toDTO(savedTransaction);
     } catch (Exception e) {
       LOGGER.error("Error trying to save transaction", e);
@@ -82,7 +86,7 @@ public class TransactionServiceImpl implements TransactionService {
     try {
       if (repository.findById(id).isPresent()) {
         final Transaction transaction = mapper.toEntity(updatedDTO);
-        repository.saveAndFlush(transaction);
+        repository.save(transaction);
         return;
       }
     } catch (Exception e) {

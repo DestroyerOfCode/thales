@@ -13,35 +13,35 @@ public class TransactionDTO {
 
   private Map<String, String> transactionData;
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
+  public Timestamp getTimestamp() {
+    return timestamp;
+  }
 
-    public void setTimestamp(final Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+  public void setTimestamp(final Timestamp timestamp) {
+    this.timestamp = timestamp;
+  }
 
-    public String getType() {
-        return type;
-    }
+  public String getType() {
+    return type;
+  }
 
-    public void setType(final String type) {
-        this.type = type;
-    }
+  public void setType(final String type) {
+    this.type = type;
+  }
 
-    public String getActor() {
-        return actor;
-    }
+  public String getActor() {
+    return actor;
+  }
 
-    public void setActor(final String actor) {
-        this.actor = actor;
-    }
+  public void setActor(final String actor) {
+    this.actor = actor;
+  }
 
-    public Map<String, String> getTransactionData() {
-        return transactionData;
-    }
+  public Map<String, String> getTransactionData() {
+    return transactionData;
+  }
 
-    public void setTransactionData(final Map<String, String> transactionData) {
-        this.transactionData = transactionData;
-    }
+  public void setTransactionData(final Map<String, String> transactionData) {
+    this.transactionData = transactionData;
+  }
 }
