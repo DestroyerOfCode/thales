@@ -1,11 +1,21 @@
 package org.thales.transaction.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
+
+@Document(indexName = "transaction")
 public class TransactionDTO {
 
-  private Timestamp timestamp;
+  private static final String DATE_TIME_FORMAT = "uuuu-MM-dd'T'HH:mm:ss.SSS";
+  private Long id;
+
+  @Field(type = FieldType.Date_Nanos, pattern = DATE_TIME_FORMAT, format = {})
+  private LocalDateTime timestamp;
 
   private String type;
 
@@ -13,11 +23,19 @@ public class TransactionDTO {
 
   private Map<String, String> transactionData;
 
-  public Timestamp getTimestamp() {
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(final Long id) {
+    this.id = id;
+  }
+
+  public LocalDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(final Timestamp timestamp) {
+  public void setTimestamp(final LocalDateTime timestamp) {
     this.timestamp = timestamp;
   }
 

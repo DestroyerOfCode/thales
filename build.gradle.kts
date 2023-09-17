@@ -11,7 +11,9 @@ group = "org.thales"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    google()
 }
 
 dependencies {
@@ -23,8 +25,10 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
 
-    testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.3")
+    testImplementation("org.springframework:spring-test:6.0.12")
+
 }
 
 task("run") {
