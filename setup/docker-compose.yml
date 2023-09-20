@@ -35,17 +35,17 @@ services:
       - IPC_LOCK
     volumes:
       - elasticsearch-data-volume:/usr/share/elasticsearch/data
-
-  kibana:
-    container_name: "kibana"
-    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
-    restart: always
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    ports:
-      - "${KIBANA_PORT}:${KIBANA_PORT}"
-    depends_on:
-      - elasticsearch
+#
+#  kibana:
+#    container_name: "kibana"
+#    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+##    restart: always
+#    environment:
+#      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+#    ports:
+#      - "${KIBANA_PORT}:${KIBANA_PORT}"
+#    depends_on:
+#      - elasticsearch
 volumes:
   elasticsearch-data-volume:
     driver: local

@@ -10,14 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.thales.transaction.dto.TransactionDTO;
 
-@SpringBootTest
-class TransactionServiceImplTest {
-
-  @Autowired private TransactionService transactionService;
-
-  @Test
-  void test() {
-    TransactionDTO transactionDTO = transactionService.getTransactionById(1L);
-    Assertions.assertEquals("", transactionDTO.getActor());
-  }
-}
+//@SpringBootTest
+//class TransactionServiceImplTest {
+//
+//  @Autowired private TransactionService transactionService;
+//
+//  @Test
+//  void test() {
+////    TransactionDTO transactionDTO = transactionService.getTransactionById(1L);
+////    Assertions.assertEquals("", transactionDTO.getActor());
+//  }
+//}

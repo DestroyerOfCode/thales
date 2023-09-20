@@ -23,7 +23,7 @@ dependencies {
     implementation(libs.mysql.connector.j)
     implementation(libs.modelmapper)
     implementation(libs.slf4j.api)
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
 
     testImplementation(libs.junit.jupiter)
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.3")
