@@ -10,7 +10,6 @@ org-modelmapper = "3.1.1"
 [libraries]
 spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "org.springframework.boot" }
 spring-boot-starter-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "org.springframework.boot" }
-spring-boot-starter-data-elasticsearch = { group = "org.springframework.boot", name = "spring-boot-starter-data-elasticsearch", version.ref = "org.springframework.boot" }
 mysql-connector-j = { group = "com.mysql", name = "mysql-connector-j", version.ref = "com.mysql" }
 modelmapper = { group = "org.modelmapper", name = "modelmapper", version.ref = "org.modelmapper" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "org.junit.jupiter" }

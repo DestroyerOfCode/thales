@@ -19,7 +19,6 @@ repositories {
 dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.data.jpa)
-    implementation(libs.spring.boot.starter.data.elasticsearch)
     implementation(libs.mysql.connector.j)
     implementation(libs.modelmapper)
     implementation(libs.slf4j.api)
