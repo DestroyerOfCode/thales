@@ -23,7 +23,7 @@ dependencies {
     implementation(libs.modelmapper)
     implementation(libs.slf4j.api)
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
-
+    implementation("com.google.guava:guava:32.1.2-jre")
     testImplementation(libs.junit.jupiter)
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.3")
     testImplementation("org.springframework:spring-test:6.0.12")

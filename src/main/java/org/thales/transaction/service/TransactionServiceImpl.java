@@ -1,11 +1,15 @@
 package org.thales.transaction.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thales.seach.SearchCriteria;
+import org.thales.seach.TransactionSpecificationBuilder;
 import org.thales.transaction.converter.TransactionMapper;
 import org.thales.transaction.dto.TransactionDTO;
 import org.thales.transaction.exception.TransactionRequestException;
@@ -40,7 +44,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     throw new TransactionRequestException(
-        String.format("Could not find transaction with id %s in elastic", id));
+        String.format("Could not find transaction with id %s", id));
   }
 
   @Override
@@ -88,5 +92,16 @@ public class TransactionServiceImpl implements TransactionService {
       LOGGER.error("Error trying to update transaction", e);
     }
     throw new TransactionRequestException(String.format("Transaction with ID %s not present", id));
+  }
+
+  @Override
+  public List<Transaction> findAllBySpecification(final List<SearchCriteria> criteria) {
+    final TransactionSpecificationBuilder builder = new TransactionSpecificationBuilder();
+    for (SearchCriteria criterium : criteria) {
+      builder.with(criterium.getKey(), criterium.getType(), criterium.getOperation(), criterium.getValue());
+    }
+
+    Specification<Transaction> spec = builder.build();
+    return repository.findAll(spec);
   }
 }
