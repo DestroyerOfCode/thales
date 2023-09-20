@@ -1,4 +1,4 @@
-package org.thales.seach;
+package org.thales.transaction.seach;
 
 public enum SearchOperation {
   EQUALITY,

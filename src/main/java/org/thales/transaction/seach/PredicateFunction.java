@@ -1,4 +1,4 @@
-package org.thales.seach;
+package org.thales.transaction.seach;
 
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;

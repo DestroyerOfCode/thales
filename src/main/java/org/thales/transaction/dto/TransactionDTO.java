@@ -5,8 +5,6 @@ import java.util.Map;
 
 public class TransactionDTO {
 
-  private Long id;
-
   private LocalDateTime timestamp;
 
   private String type;
@@ -15,12 +13,39 @@ public class TransactionDTO {
 
   private Map<String, String> transactionData;
 
-  public Long getId() {
-    return id;
-  }
+  private TransactionDTO() {}
 
-  public void setId(final Long id) {
-    this.id = id;
+  // Builder class
+  public static class Builder {
+    private final TransactionDTO transactionDTO = new TransactionDTO();
+
+    public Builder timestamp(LocalDateTime timestamp) {
+      transactionDTO.timestamp = timestamp;
+      return this;
+    }
+
+    public Builder type(String type) {
+      transactionDTO.type = type;
+      return this;
+    }
+
+    public Builder actor(String actor) {
+      transactionDTO.actor = actor;
+      return this;
+    }
+
+    public Builder transactionData(Map<String, String> transactionData) {
+      transactionDTO.transactionData = transactionData;
+      return this;
+    }
+
+    public TransactionDTO build() {
+      // You can perform additional validation here if needed
+      return transactionDTO;
+    }
+  }
+  public static Builder builder() {
+    return new Builder();
   }
 
   public LocalDateTime getTimestamp() {

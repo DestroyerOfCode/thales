@@ -2,14 +2,15 @@ package org.thales.transaction.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thales.seach.SearchCriteria;
-import org.thales.seach.TransactionSpecificationBuilder;
+import org.thales.transaction.seach.SearchCriteria;
+import org.thales.transaction.seach.TransactionSpecificationBuilder;
 import org.thales.transaction.converter.TransactionMapper;
 import org.thales.transaction.dto.TransactionDTO;
 import org.thales.transaction.exception.TransactionRequestException;
@@ -49,10 +50,16 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Override
   @Transactional
+  public List<TransactionDTO> create(final List<TransactionDTO> transactions) {
+    return transactions.stream().map(this::create).collect(Collectors.toList());
+  }
+
+  @Override
+  @Transactional
   public TransactionDTO create(final TransactionDTO dto) {
     try {
       final Transaction transaction = mapper.toEntity(dto);
-      final Transaction savedTransaction = repository.save(transaction);
+      final Transaction savedTransaction = repository.saveAndFlush(transaction);
 
       return mapper.toDTO(savedTransaction);
     } catch (Exception e) {
@@ -64,7 +71,7 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Override
   @Transactional
-  public void deleteTransactionById(final Long id) {
+  public void delete(final Long id) {
     try {
       final Optional<Transaction> transactionOpt = repository.findById(id);
 
@@ -81,11 +88,24 @@ public class TransactionServiceImpl implements TransactionService {
 
   @Override
   @Transactional
-  public void updateTransaction(final Long id, final TransactionDTO updatedDTO) {
+  public void delete() {
     try {
-      if (repository.findById(id).isPresent()) {
-        final Transaction transaction = mapper.toEntity(updatedDTO);
-        repository.save(transaction);
+      repository.deleteAll();
+      return;
+    } catch (Exception e) {
+      LOGGER.error("Error trying to delete transactions", e);
+    }
+
+    throw new TransactionRequestException("Transactions were unable to be deleted");
+  }
+
+  @Override
+  @Transactional
+  public void update(final Long id, final TransactionDTO updatedDTO) {
+    try {
+      final Optional<Transaction> transactionOpt = repository.findById(id);
+      if (transactionOpt.isPresent()) {
+        updateTransaction(updatedDTO, transactionOpt);
         return;
       }
     } catch (Exception e) {
@@ -95,13 +115,29 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
-  public List<Transaction> findAllBySpecification(final List<SearchCriteria> criteria) {
+  public List<TransactionDTO> search(final List<SearchCriteria> criteria) {
     final TransactionSpecificationBuilder builder = new TransactionSpecificationBuilder();
-    for (SearchCriteria criterium : criteria) {
-      builder.with(criterium.getKey(), criterium.getType(), criterium.getOperation(), criterium.getValue());
-    }
+    try {
+      for (SearchCriteria criterium : criteria) {
+        builder.with(criterium.key(), criterium.type(), criterium.operation(), criterium.value());
+      }
 
-    Specification<Transaction> spec = builder.build();
-    return repository.findAll(spec);
+      final Specification<Transaction> spec = builder.build();
+      final List<Transaction> transactions = repository.findAll(spec);
+
+      return transactions.stream().map(mapper::toDTO).collect(Collectors.toList());
+    } catch (RuntimeException e) {
+      LOGGER.error("Error trying to search transactions", e);
+    }
+    throw new TransactionRequestException("Searching transactions threw an exception");
+  }
+
+  private void updateTransaction(TransactionDTO updatedDTO, Optional<Transaction> transactionOpt) {
+    transactionOpt.get().setTimestamp(updatedDTO.getTimestamp());
+    transactionOpt.get().setType(updatedDTO.getType());
+    transactionOpt.get().setActor(updatedDTO.getActor());
+    transactionOpt.get().setTransactionData(updatedDTO.getTransactionData());
+
+    repository.save(transactionOpt.get());
   }
 }
