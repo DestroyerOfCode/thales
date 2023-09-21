@@ -8,12 +8,12 @@ import org.thales.transaction.model.domain.Transaction;
 
 public class TransactionSpecificationBuilder {
 
-  private final List<org.thales.transaction.seach.SearchCriteria> params = new ArrayList<>();
+  private final List<SearchCriteria> params = new ArrayList<>();
 
   public void with(
-          final String key, final Type type, final org.thales.transaction.seach.SearchOperation op, final Object value) {
+          final String key, final Type type, final SearchOperation op, final Object value) {
     if (Objects.nonNull(op)) {
-      params.add(new org.thales.transaction.seach.SearchCriteria(key, type, op, value));
+      params.add(new SearchCriteria(key, type, op, value));
     }
   }
 
@@ -24,8 +24,8 @@ public class TransactionSpecificationBuilder {
 
     Specification<Transaction> result = null;
 
-    for (org.thales.transaction.seach.SearchCriteria param : params) {
-      result = Specification.where(result).and(new org.thales.transaction.seach.TransactionSpecification(param));
+    for (SearchCriteria param : params) {
+      result = Specification.where(result).and(new TransactionSpecification(param));
     }
 
     return result;

@@ -19,9 +19,9 @@ import static org.thales.transaction.seach.Type.STRING;
 
 public class TransactionSpecification implements Specification<Transaction> {
 
-  private final org.thales.transaction.seach.SearchCriteria criteria;
+  private final SearchCriteria criteria;
 
-  public TransactionSpecification(final org.thales.transaction.seach.SearchCriteria criteria) {
+  public TransactionSpecification(final SearchCriteria criteria) {
     super();
     this.criteria = criteria;
   }
@@ -43,7 +43,7 @@ public class TransactionSpecification implements Specification<Transaction> {
   private Predicate isStringOrMap(
       final Root<Transaction> root,
       final CriteriaBuilder builder,
-      final org.thales.transaction.seach.PredicateFunction predFunc) {
+      final PredicateFunction predFunc) {
     if (Objects.equals(MAP, criteria.type())) {
       final String[] keys = criteria.key().split("\\.");
       final MapJoin<Root<Transaction>, String, String> join = root.joinMap(keys[0]);
